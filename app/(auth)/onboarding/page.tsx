@@ -60,7 +60,7 @@ export default function OnboardingPage() {
 
   if (!isReady) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-[#0A0A0F] to-[#0F0F1A] flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-gradient-to-b dark:from-[#0A0A0F] dark:to-[#0F0F1A] flex items-center justify-center">
         <div className="flex gap-2">
           {[0, 1, 2].map((i) => (
             <motion.div
@@ -78,7 +78,7 @@ export default function OnboardingPage() {
   const CurrentComponent = steps[currentStep].component;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#0A0A0F] to-[#0F0F1A]">
+    <div className="min-h-screen bg-gray-50 dark:bg-gradient-to-b dark:from-[#0A0A0F] dark:to-[#0F0F1A]">
       {/* Progress Bar */}
       <div className="fixed top-0 left-0 right-0 z-50">
         <div className="h-1 bg-white/10">

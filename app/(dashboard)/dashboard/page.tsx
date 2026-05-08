@@ -16,7 +16,9 @@ import {
   ChevronRight,
   Phone,
   MessageCircle,
-  Brain
+  Brain,
+  Shield,
+  Stethoscope
 } from "lucide-react";
 import Sidebar from "@/components/dashboard/Sidebar";
 import Header from "@/components/dashboard/Header";
@@ -69,6 +71,8 @@ export default function DashboardPage() {
   const quickActions = [
     { icon: Apple, label: "Scan Food", color: "from-cyan-500 to-blue-500", href: "/food-scanner" },
     { icon: Pill, label: "Medications", color: "from-purple-500 to-pink-500", href: "/medications" },
+    { icon: Shield, label: "Risk Screening", color: "from-orange-500 to-amber-500", href: "/risk-screening" },
+    { icon: Stethoscope, label: "Symptom Checker", color: "from-teal-500 to-green-500", href: "/symptom-checker" },
     { icon: Smile, label: "AI Companion", color: "from-green-500 to-teal-500", href: "/ai-companion" },
     { icon: Bell, label: "Emergency", color: "from-red-500 to-orange-500", href: "/emergency" },
   ];
@@ -93,7 +97,7 @@ export default function DashboardPage() {
   ];
 
   return (
-    <div className="flex h-screen bg-gradient-to-b from-[#0A0A0F] to-[#0F0F1A]">
+    <div className="flex h-screen bg-gray-50 dark:bg-gradient-to-b dark:from-[#0A0A0F] dark:to-[#0F0F1A]">
       <Sidebar />
       
       <div className="flex-1 flex flex-col overflow-hidden">
@@ -108,17 +112,17 @@ export default function DashboardPage() {
               className="flex justify-between items-start"
             >
               <div>
-                <h1 className="text-3xl font-bold text-white">
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
                   {greeting}, {user?.name || "there"}! 👋
                 </h1>
-                <p className="text-gray-400 mt-1">
+                <p className="text-gray-500 dark:text-gray-400 mt-1">
                   {currentTime} • Your health summary is ready
                 </p>
               </div>
               <div className="glass rounded-xl px-4 py-2">
                 <div className="flex items-center gap-2">
                   <Brain className="w-4 h-4 text-cyan-400" />
-                  <span className="text-sm text-gray-300">AI Active</span>
+                  <span className="text-sm text-gray-600 dark:text-gray-300">AI Active</span>
                 </div>
               </div>
             </motion.div>
@@ -138,13 +142,13 @@ export default function DashboardPage() {
                   <stat.icon className={`w-8 h-8 ${stat.color}`} />
                   <span className={`text-sm ${
                     stat.change.startsWith("+") ? "text-green-400" : 
-                    stat.change.startsWith("-") ? "text-red-400" : "text-gray-400"
+                    stat.change.startsWith("-") ? "text-red-400" : "text-gray-500 dark:text-gray-400"
                   }`}>
                     {stat.change}
                   </span>
                 </div>
-                <div className="text-2xl font-bold text-white">{stat.value}</div>
-                <div className="text-sm text-gray-400 mt-1">{stat.label}</div>
+                <div className="text-2xl font-bold text-gray-900 dark:text-white">{stat.value}</div>
+                <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">{stat.label}</div>
               </motion.div>
             ))}
           </div>
@@ -156,8 +160,8 @@ export default function DashboardPage() {
               <HealthScoreRing score={healthScore} />
               
               <div className="glass rounded-xl p-5">
-                <h3 className="text-lg font-semibold text-white mb-4">Quick Actions</h3>
-                <div className="grid grid-cols-2 gap-3">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Quick Actions</h3>
+                <div className="grid grid-cols-3 gap-3">
                   {quickActions.map((action, idx) => (
                     <motion.a
                       key={idx}
@@ -167,8 +171,8 @@ export default function DashboardPage() {
                       transition={{ delay: 0.2 + idx * 0.1 }}
                       className={`p-4 rounded-xl bg-gradient-to-br ${action.color} hover:shadow-lg transition-all group cursor-pointer`}
                     >
-                      <action.icon className="w-6 h-6 text-white mb-2" />
-                      <div className="text-white font-medium text-sm">{action.label}</div>
+                      <action.icon className="w-6 h-6 text-gray-900 dark:text-white mb-2" />
+                      <div className="text-gray-900 dark:text-white font-medium text-sm">{action.label}</div>
                     </motion.a>
                   ))}
                 </div>
@@ -183,19 +187,19 @@ export default function DashboardPage() {
               
               <div className="glass rounded-xl p-5">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-white">Recent Alerts</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Recent Alerts</h3>
                   <button className="text-sm text-cyan-400 hover:text-cyan-300">
                     View All
                   </button>
                 </div>
                 <div className="space-y-3">
                   {recentAlerts.map((alert) => (
-                    <div key={alert.id} className="flex items-start gap-3 p-3 rounded-lg bg-white/5">
+                    <div key={alert.id} className="flex items-start gap-3 p-3 rounded-lg bg-gray-100 dark:bg-white/5">
                       {alert.type === "warning" && <AlertTriangle className="w-5 h-5 text-yellow-400 flex-shrink-0" />}
                       {alert.type === "info" && <Bell className="w-5 h-5 text-cyan-400 flex-shrink-0" />}
                       {alert.type === "success" && <Smile className="w-5 h-5 text-green-400 flex-shrink-0" />}
                       <div className="flex-1">
-                        <p className="text-sm text-white">{alert.message}</p>
+                        <p className="text-sm text-gray-900 dark:text-white">{alert.message}</p>
                         <p className="text-xs text-gray-500 mt-1">{alert.time}</p>
                       </div>
                       <ChevronRight className="w-4 h-4 text-gray-500" />
@@ -210,13 +214,13 @@ export default function DashboardPage() {
               <EmotionalInsightWidget />
               
               <div className="glass rounded-xl p-5">
-                <h3 className="text-lg font-semibold text-white mb-4">Emergency Ready</h3>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Emergency Ready</h3>
                 <div className="space-y-3">
                   <button className="w-full p-4 rounded-xl bg-red-500/20 border border-red-500/30 text-red-400 font-medium hover:bg-red-500/30 transition flex items-center justify-center gap-3">
                     <Phone className="w-5 h-5" />
                     Emergency SOS
                   </button>
-                  <button className="w-full p-4 rounded-xl glass text-gray-300 hover:text-white transition flex items-center justify-center gap-3">
+                  <button className="w-full p-4 rounded-xl glass text-gray-600 dark:text-gray-300 hover:text-white transition flex items-center justify-center gap-3">
                     <MessageCircle className="w-5 h-5" />
                     Message Caregiver
                   </button>

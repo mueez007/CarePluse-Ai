@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import Sidebar from "@/components/dashboard/Sidebar";
 import Header from "@/components/dashboard/Header";
+import { buildPatientContext, getFullHealthProfile } from "@/lib/health-data";
 
 interface Message {
   id: string;
@@ -46,10 +47,27 @@ export default function AICompanionPage() {
   const speechQueueRef = useRef<string[]>([]);
   const isSpeakingRef = useRef(false);
   const abortControllerRef = useRef<AbortController | null>(null);
+  const patientContextRef = useRef<string>("");
 
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Build patient context on mount
+  useEffect(() => {
+    const profile = getFullHealthProfile();
+    patientContextRef.current = buildPatientContext();
+    
+    // Personalize greeting
+    if (profile.basicDetails?.name) {
+      setMessages([{
+        id: "1",
+        role: "assistant",
+        content: `Hello ${profile.basicDetails.name}! I'm your CarePulse AI companion. I have access to your health profile${profile.healthConditions.length > 0 ? ` and I'm aware of your health conditions` : ''}. How can I help you today? 💙`,
+        timestamp: new Date(),
+      }]);
+    }
+  }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -243,7 +261,10 @@ export default function AICompanionPage() {
       const response = await fetch(chatEndpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: allMessages }),
+        body: JSON.stringify({ 
+          messages: allMessages,
+          patientContext: patientContextRef.current,
+        }),
         signal: abortControllerRef.current.signal,
       });
 
@@ -328,16 +349,16 @@ export default function AICompanionPage() {
   };
 
   const quickSuggestions = [
-    "How are you today?",
+    "Am I at risk for anything?",
+    "Are my medications safe?",
+    "What should I eat today?",
     "I'm feeling anxious",
-    "Breathing exercise",
-    "Motivate me",
-    "Health tips",
-    "Tell me a story",
+    "Check my health summary",
+    "Any symptom warnings?",
   ];
 
   return (
-    <div className="flex h-screen bg-gradient-to-b from-[#0A0A0F] to-[#0F0F1A]">
+    <div className="flex h-screen bg-gray-50 dark:bg-gradient-to-b dark:from-[#0A0A0F] dark:to-[#0F0F1A]">
       <Sidebar />
       
       <div className="flex-1 flex flex-col overflow-hidden">
@@ -345,15 +366,15 @@ export default function AICompanionPage() {
         
         <main className="flex-1 overflow-hidden flex flex-col">
           {/* Chat Header */}
-          <div className="glass border-b border-white/10 px-6 py-4">
+          <div className="glass border-b border-gray-200 dark:border-white/10 px-6 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center">
-                  <Brain className="w-5 h-5 text-white" />
+                  <Brain className="w-5 h-5 text-gray-900 dark:text-white" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold text-white">AI Companion</h1>
-                  <p className="text-xs text-gray-400">
+                  <h1 className="text-xl font-bold text-gray-900 dark:text-white">AI Companion</h1>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
                     {aiModel === "nvidia" ? "DeepSeek R1" : "Groq Llama 3.3"} • {liveMode ? "🎙️ Live Mode" : "Always here for you 💙"}
                   </p>
                 </div>
@@ -363,7 +384,7 @@ export default function AICompanionPage() {
                 <select
                   value={aiModel}
                   onChange={(e) => setAiModel(e.target.value as "groq" | "nvidia")}
-                  className="px-2 py-1.5 rounded-lg bg-white/5 border border-white/10 text-gray-300 text-xs focus:outline-none focus:border-cyan-500 cursor-pointer"
+                  className="px-2 py-1.5 rounded-lg bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 text-xs focus:outline-none focus:border-cyan-500 cursor-pointer"
                 >
                   <option value="groq">⚡ Groq</option>
                   <option value="nvidia">🟢 DeepSeek</option>
@@ -374,7 +395,7 @@ export default function AICompanionPage() {
                   className={`flex items-center gap-2 px-3 py-2 rounded-xl transition-all ${
                     liveMode
                       ? "bg-green-500/20 border border-green-500/40 text-green-400"
-                      : "glass text-gray-400 hover:text-white"
+                      : "glass text-gray-500 dark:text-gray-400 hover:text-white"
                   }`}
                 >
                   {liveMode ? (
@@ -463,7 +484,7 @@ export default function AICompanionPage() {
                       : "bg-white/10"
                   }`}>
                     {message.role === "user" ? (
-                      <Smile className="w-4 h-4 text-white" />
+                      <Smile className="w-4 h-4 text-gray-900 dark:text-white" />
                     ) : (
                       <Sparkles className="w-4 h-4 text-cyan-400" />
                     )}
@@ -473,7 +494,7 @@ export default function AICompanionPage() {
                       ? "bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/30"
                       : "glass"
                   }`}>
-                    <p className="text-white text-sm whitespace-pre-wrap">{message.content}</p>
+                    <p className="text-gray-900 dark:text-white text-sm whitespace-pre-wrap">{message.content}</p>
                     {message.content && (
                       <p className="text-xs text-gray-500 mt-2">
                         {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -510,13 +531,13 @@ export default function AICompanionPage() {
 
           {/* Quick Suggestions */}
           {!liveMode && (
-            <div className="px-6 py-3 border-t border-white/10">
+            <div className="px-6 py-3 border-t border-gray-200 dark:border-white/10">
               <div className="flex gap-2 overflow-x-auto pb-2 hide-scrollbar">
                 {quickSuggestions.map((suggestion, idx) => (
                   <button
                     key={idx}
                     onClick={() => setInput(suggestion)}
-                    className="px-3 py-1.5 rounded-full glass text-gray-300 text-sm whitespace-nowrap hover:bg-white/10 transition"
+                    className="px-3 py-1.5 rounded-full glass text-gray-600 dark:text-gray-300 text-sm whitespace-nowrap hover:bg-white/10 transition"
                   >
                     {suggestion}
                   </button>
@@ -526,14 +547,14 @@ export default function AICompanionPage() {
           )}
 
           {/* Input Area */}
-          <div className="p-6 border-t border-white/10">
+          <div className="p-6 border-t border-gray-200 dark:border-white/10">
             <div className="flex gap-3">
               <button
                 onClick={isListening ? stopListening : startListening}
                 className={`p-3 rounded-xl transition ${
                   isListening
                     ? "bg-red-500/20 border border-red-500/30 text-red-400 animate-pulse"
-                    : "glass text-gray-400 hover:text-white"
+                    : "glass text-gray-500 dark:text-gray-400 hover:text-white"
                 }`}
               >
                 {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
@@ -544,7 +565,7 @@ export default function AICompanionPage() {
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyPress}
                 placeholder={liveMode ? "Live mode active — just speak!" : "Type your message or click the mic..."}
-                className="flex-1 p-3 rounded-xl glass text-white placeholder:text-gray-500 outline-none resize-none border border-white/10 focus:border-cyan-500 transition"
+                className="flex-1 p-3 rounded-xl glass text-gray-900 dark:text-white placeholder:text-gray-500 outline-none resize-none border border-gray-200 dark:border-white/10 focus:border-cyan-500 transition"
                 rows={1}
                 style={{ minHeight: "48px", maxHeight: "120px" }}
               />
@@ -552,7 +573,7 @@ export default function AICompanionPage() {
               <button
                 onClick={sendMessage}
                 disabled={!input.trim() || isLoading}
-                className="p-3 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 text-white hover:shadow-lg transition disabled:opacity-50"
+                className="p-3 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 text-gray-900 dark:text-white hover:shadow-lg transition disabled:opacity-50"
               >
                 <Send className="w-5 h-5" />
               </button>

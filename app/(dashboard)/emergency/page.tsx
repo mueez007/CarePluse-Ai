@@ -109,7 +109,7 @@ export default function EmergencyPage() {
   const primaryContact = contacts.find(c => c.isPrimary);
 
   return (
-    <div className="flex h-screen bg-gradient-to-b from-[#0A0A0F] to-[#0F0F1A]">
+    <div className="flex h-screen bg-gray-50 dark:bg-gradient-to-b dark:from-[#0A0A0F] dark:to-[#0F0F1A]">
       <Sidebar />
       
       <div className="flex-1 flex flex-col overflow-hidden">
@@ -123,8 +123,8 @@ export default function EmergencyPage() {
               animate={{ opacity: 1, y: 0 }}
               className="mb-8"
             >
-              <h1 className="text-3xl font-bold text-white">Emergency</h1>
-              <p className="text-gray-400 mt-1">Manage emergency contacts and alerts</p>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Emergency</h1>
+              <p className="text-gray-500 dark:text-gray-400 mt-1">Manage emergency contacts and alerts</p>
             </motion.div>
 
             {/* SOS Button */}
@@ -136,7 +136,7 @@ export default function EmergencyPage() {
               {!sosActive ? (
                 <button
                   onClick={() => setSosActive(true)}
-                  className="w-full py-8 rounded-2xl bg-gradient-to-r from-red-600 to-red-700 text-white font-bold text-xl flex items-center justify-center gap-4 hover:shadow-2xl hover:shadow-red-500/30 transition-all animate-pulse"
+                  className="w-full py-8 rounded-2xl bg-gradient-to-r from-red-600 to-red-700 text-gray-900 dark:text-white font-bold text-xl flex items-center justify-center gap-4 hover:shadow-2xl hover:shadow-red-500/30 transition-all animate-pulse"
                 >
                   <AlertTriangle className="w-8 h-8" />
                   EMERGENCY SOS
@@ -148,16 +148,16 @@ export default function EmergencyPage() {
                     <div className="absolute inset-0 rounded-full bg-red-500/20 animate-pulse-ring" />
                     <div className="absolute inset-0 rounded-full bg-red-500/40 animate-pulse-ring delay-500" />
                     <div className="w-full h-full rounded-full bg-red-500 flex items-center justify-center">
-                      <span className="text-4xl font-bold text-white">{countdown}</span>
+                      <span className="text-4xl font-bold text-gray-900 dark:text-white">{countdown}</span>
                     </div>
                   </div>
-                  <h2 className="text-2xl font-bold text-white mb-2">Emergency Alert in {countdown}s</h2>
-                  <p className="text-gray-400 mb-6">
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Emergency Alert in {countdown}s</h2>
+                  <p className="text-gray-500 dark:text-gray-400 mb-6">
                     Alert will be sent to {primaryContact?.name || "your emergency contacts"}
                   </p>
                   <button
                     onClick={cancelSOS}
-                    className="px-6 py-3 rounded-xl glass text-white hover:bg-white/10 transition"
+                    className="px-6 py-3 rounded-xl glass text-gray-900 dark:text-white hover:bg-white/10 transition"
                   >
                     Cancel SOS
                   </button>
@@ -175,18 +175,18 @@ export default function EmergencyPage() {
               >
                 <div className="flex items-center gap-3 mb-4">
                   <Shield className="w-6 h-6 text-cyan-400" />
-                  <h2 className="text-xl font-semibold text-white">Primary Caregiver</h2>
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Primary Caregiver</h2>
                 </div>
                 <div className="flex items-center justify-between flex-wrap gap-4">
                   <div>
-                    <p className="text-white font-medium text-lg">{primaryContact.name}</p>
-                    <p className="text-gray-400">{primaryContact.relation}</p>
+                    <p className="text-gray-900 dark:text-white font-medium text-lg">{primaryContact.name}</p>
+                    <p className="text-gray-500 dark:text-gray-400">{primaryContact.relation}</p>
                     <div className="flex items-center gap-3 mt-2">
-                      <span className="text-sm text-gray-400 flex items-center gap-1">
+                      <span className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
                         <Phone className="w-3 h-3" /> {primaryContact.phone}
                       </span>
                       {primaryContact.email && (
-                        <span className="text-sm text-gray-400 flex items-center gap-1">
+                        <span className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
                           <Mail className="w-3 h-3" /> {primaryContact.email}
                         </span>
                       )}
@@ -212,7 +212,7 @@ export default function EmergencyPage() {
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <Users className="w-6 h-6 text-purple-400" />
-                  <h2 className="text-xl font-semibold text-white">Emergency Contacts</h2>
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Emergency Contacts</h2>
                 </div>
                 <button
                   onClick={() => setShowAddForm(true)}
@@ -226,7 +226,7 @@ export default function EmergencyPage() {
               {contacts.length === 0 ? (
                 <div className="text-center py-12">
                   <Users className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-                  <p className="text-gray-400">No emergency contacts added yet</p>
+                  <p className="text-gray-500 dark:text-gray-400">No emergency contacts added yet</p>
                   <button
                     onClick={() => setShowAddForm(true)}
                     className="mt-4 px-4 py-2 rounded-xl bg-cyan-500/20 text-cyan-400 text-sm"
@@ -243,25 +243,25 @@ export default function EmergencyPage() {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: idx * 0.1 }}
                       className={`flex items-center justify-between p-4 rounded-xl ${
-                        contact.isPrimary ? "bg-cyan-500/10 border border-cyan-500/20" : "bg-white/5"
+                        contact.isPrimary ? "bg-cyan-500/10 border border-cyan-500/20" : "bg-gray-100 dark:bg-white/5"
                       }`}
                     >
                       <div>
                         <div className="flex items-center gap-2">
-                          <p className="text-white font-medium">{contact.name}</p>
+                          <p className="text-gray-900 dark:text-white font-medium">{contact.name}</p>
                           {contact.isPrimary && (
                             <span className="text-xs px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-400">
                               Primary
                             </span>
                           )}
-                          <span className="text-sm text-gray-400">({contact.relation})</span>
+                          <span className="text-sm text-gray-500 dark:text-gray-400">({contact.relation})</span>
                         </div>
                         <div className="flex items-center gap-3 mt-1">
-                          <span className="text-sm text-gray-400 flex items-center gap-1">
+                          <span className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
                             <Phone className="w-3 h-3" /> {contact.phone}
                           </span>
                           {contact.email && (
-                            <span className="text-sm text-gray-400 flex items-center gap-1">
+                            <span className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
                               <Mail className="w-3 h-3" /> {contact.email}
                             </span>
                           )}
@@ -302,11 +302,11 @@ export default function EmergencyPage() {
               transition={{ delay: 0.3 }}
               className="mt-6 glass rounded-2xl p-6"
             >
-              <h2 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
                 <Bell className="w-5 h-5 text-yellow-400" />
                 Emergency Instructions
               </h2>
-              <ul className="space-y-2 text-sm text-gray-400">
+              <ul className="space-y-2 text-sm text-gray-500 dark:text-gray-400">
                 <li>• Press the SOS button for immediate assistance</li>
                 <li>• Emergency contacts will receive SMS and call alerts</li>
                 <li>• Your location will be shared with emergency contacts</li>
@@ -326,19 +326,19 @@ export default function EmergencyPage() {
             animate={{ opacity: 1, scale: 1 }}
             className="glass rounded-2xl p-6 max-w-md w-full"
           >
-            <h2 className="text-xl font-bold text-white mb-4">Add Emergency Contact</h2>
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Add Emergency Contact</h2>
             <div className="space-y-4">
               <input
                 type="text"
                 placeholder="Full name"
                 value={newContact.name}
                 onChange={(e) => setNewContact({ ...newContact, name: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-gray-500 focus:outline-none focus:border-cyan-500"
+                className="w-full px-4 py-3 rounded-xl bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white placeholder:text-gray-500 focus:outline-none focus:border-cyan-500"
               />
               <select
                 value={newContact.relation}
                 onChange={(e) => setNewContact({ ...newContact, relation: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-cyan-500"
+                className="w-full px-4 py-3 rounded-xl bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white focus:outline-none focus:border-cyan-500"
               >
                 <option value="">Select relation</option>
                 <option value="Spouse">Spouse</option>
@@ -355,25 +355,25 @@ export default function EmergencyPage() {
                 placeholder="Phone number"
                 value={newContact.phone}
                 onChange={(e) => setNewContact({ ...newContact, phone: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-gray-500 focus:outline-none focus:border-cyan-500"
+                className="w-full px-4 py-3 rounded-xl bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white placeholder:text-gray-500 focus:outline-none focus:border-cyan-500"
               />
               <input
                 type="email"
                 placeholder="Email (optional)"
                 value={newContact.email}
                 onChange={(e) => setNewContact({ ...newContact, email: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-gray-500 focus:outline-none focus:border-cyan-500"
+                className="w-full px-4 py-3 rounded-xl bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white placeholder:text-gray-500 focus:outline-none focus:border-cyan-500"
               />
               <div className="flex gap-3">
                 <button
                   onClick={addContact}
-                  className="flex-1 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-medium"
+                  className="flex-1 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 text-gray-900 dark:text-white font-medium"
                 >
                   Add Contact
                 </button>
                 <button
                   onClick={() => setShowAddForm(false)}
-                  className="px-6 py-3 rounded-xl glass text-gray-400 hover:text-white"
+                  className="px-6 py-3 rounded-xl glass text-gray-500 dark:text-gray-400 hover:text-white"
                 >
                   Cancel
                 </button>

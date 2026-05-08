@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 // Routes that require authentication
-const protectedRoutes = ['/dashboard', '/profile', '/settings', '/medications', '/food-scanner', '/ai-companion', '/emergency']
+const protectedRoutes = ['/dashboard', '/profile', '/settings', '/medications', '/food-scanner', '/ai-companion', '/emergency', '/risk-screening', '/symptom-checker']
 const authRoutes = ['/login', '/signup']
 
 export async function middleware(req: NextRequest) {

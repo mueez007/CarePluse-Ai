@@ -191,7 +191,7 @@ export default function MedicationsPage() {
   const adherenceRate = medications.length > 0 ? Math.round((completedCount / medications.length) * 100) : 0;
 
   return (
-    <div className="flex h-screen bg-gradient-to-b from-[#0A0A0F] to-[#0F0F1A]">
+    <div className="flex h-screen bg-gray-50 dark:bg-gradient-to-b dark:from-[#0A0A0F] dark:to-[#0F0F1A]">
       <Sidebar />
       
       <div className="flex-1 flex flex-col overflow-hidden">
@@ -206,8 +206,8 @@ export default function MedicationsPage() {
               className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4"
             >
               <div>
-                <h1 className="text-3xl font-bold text-white">Medications</h1>
-                <p className="text-gray-400 mt-1">Manage your medicines and reminders</p>
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Medications</h1>
+                <p className="text-gray-500 dark:text-gray-400 mt-1">Manage your medicines and reminders</p>
               </div>
               <div className="flex gap-3">
                 <button
@@ -219,14 +219,14 @@ export default function MedicationsPage() {
                     setExtractedMeds([]);
                     setShowExtractedPreview(false);
                   }}
-                  className="px-4 py-2 rounded-xl glass text-white hover:bg-white/10 transition flex items-center gap-2"
+                  className="px-4 py-2 rounded-xl glass text-gray-900 dark:text-white hover:bg-white/10 transition flex items-center gap-2"
                 >
                   <Upload className="w-4 h-4" />
                   Upload Prescription
                 </button>
                 <button
                   onClick={() => setShowAddModal(true)}
-                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-medium flex items-center gap-2"
+                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 text-gray-900 dark:text-white font-medium flex items-center gap-2"
                 >
                   <Plus className="w-4 h-4" />
                   Add Medicine
@@ -244,8 +244,8 @@ export default function MedicationsPage() {
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-gray-400 text-sm">Active Medications</p>
-                    <p className="text-3xl font-bold text-white">{todaySchedule.length}</p>
+                    <p className="text-gray-500 dark:text-gray-400 text-sm">Active Medications</p>
+                    <p className="text-3xl font-bold text-gray-900 dark:text-white">{todaySchedule.length}</p>
                   </div>
                   <Pill className="w-10 h-10 text-purple-400 opacity-50" />
                 </div>
@@ -259,8 +259,8 @@ export default function MedicationsPage() {
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-gray-400 text-sm">Today&apos;s Completed</p>
-                    <p className="text-3xl font-bold text-white">{completedCount}</p>
+                    <p className="text-gray-500 dark:text-gray-400 text-sm">Today&apos;s Completed</p>
+                    <p className="text-3xl font-bold text-gray-900 dark:text-white">{completedCount}</p>
                   </div>
                   <CheckCircle className="w-10 h-10 text-green-400 opacity-50" />
                 </div>
@@ -274,8 +274,8 @@ export default function MedicationsPage() {
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-gray-400 text-sm">Adherence Rate</p>
-                    <p className="text-3xl font-bold text-white">{adherenceRate}%</p>
+                    <p className="text-gray-500 dark:text-gray-400 text-sm">Adherence Rate</p>
+                    <p className="text-3xl font-bold text-gray-900 dark:text-white">{adherenceRate}%</p>
                   </div>
                   <div className="w-10 h-10 rounded-full border-2 border-cyan-400 flex items-center justify-center">
                     <span className="text-sm text-cyan-400">{adherenceRate}</span>
@@ -291,7 +291,7 @@ export default function MedicationsPage() {
               transition={{ delay: 0.4 }}
               className="glass rounded-2xl p-6"
             >
-              <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                 <Calendar className="w-5 h-5 text-cyan-400" />
                 Today&apos;s Schedule
               </h2>
@@ -299,7 +299,7 @@ export default function MedicationsPage() {
               {medications.length === 0 ? (
                 <div className="text-center py-12">
                   <Pill className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-                  <p className="text-gray-400">No medications added yet</p>
+                  <p className="text-gray-500 dark:text-gray-400">No medications added yet</p>
                   <div className="flex gap-3 justify-center mt-4">
                     <button
                       onClick={() => setShowAddModal(true)}
@@ -327,7 +327,7 @@ export default function MedicationsPage() {
                       className={`flex items-center justify-between p-4 rounded-xl border transition-all ${
                         med.status === "completed"
                           ? "bg-green-500/5 border-green-500/20"
-                          : "bg-white/5 border-white/10"
+                          : "bg-gray-100 dark:bg-white/5 border-gray-200 dark:border-white/10"
                       }`}
                     >
                       <div className="flex items-center gap-4">
@@ -342,7 +342,7 @@ export default function MedicationsPage() {
                           <h3 className={`font-semibold ${
                             med.status === "completed" ? "text-green-300 line-through" : "text-white"
                           }`}>{med.name}</h3>
-                          <p className="text-sm text-gray-400">{med.dosage} • {med.timing} • {med.frequency}</p>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">{med.dosage} • {med.timing} • {med.frequency}</p>
                           {med.purpose && (
                             <p className="text-xs text-cyan-400 mt-1">{med.purpose}</p>
                           )}
@@ -378,14 +378,14 @@ export default function MedicationsPage() {
               transition={{ delay: 0.5 }}
               className="mt-6 glass rounded-2xl p-6"
             >
-              <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                 <Phone className="w-5 h-5 text-cyan-400" />
                 Voice Call Reminders
               </h2>
-              <p className="text-gray-400 text-sm mb-4">
+              <p className="text-gray-500 dark:text-gray-400 text-sm mb-4">
                 Enable automated voice calls for medicine reminders
               </p>
-              <button className="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-medium flex items-center gap-2">
+              <button className="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 text-gray-900 dark:text-white font-medium flex items-center gap-2">
                 <Bell className="w-4 h-4" />
                 Enable Voice Reminders
               </button>
@@ -405,9 +405,9 @@ export default function MedicationsPage() {
               className="glass rounded-2xl p-6 max-w-md w-full"
             >
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-bold text-white">Add Medication</h2>
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white">Add Medication</h2>
                 <button onClick={() => setShowAddModal(false)} className="p-1 rounded-lg hover:bg-white/10">
-                  <X className="w-5 h-5 text-gray-400" />
+                  <X className="w-5 h-5 text-gray-500 dark:text-gray-400" />
                 </button>
               </div>
               <div className="space-y-4">
@@ -416,19 +416,19 @@ export default function MedicationsPage() {
                   placeholder="Medicine name"
                   value={newMed.name}
                   onChange={(e) => setNewMed({ ...newMed, name: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-gray-500 focus:outline-none focus:border-cyan-500"
+                  className="w-full px-4 py-3 rounded-xl bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white placeholder:text-gray-500 focus:outline-none focus:border-cyan-500"
                 />
                 <input
                   type="text"
                   placeholder="Dosage (e.g., 500mg)"
                   value={newMed.dosage}
                   onChange={(e) => setNewMed({ ...newMed, dosage: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-gray-500 focus:outline-none focus:border-cyan-500"
+                  className="w-full px-4 py-3 rounded-xl bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white placeholder:text-gray-500 focus:outline-none focus:border-cyan-500"
                 />
                 <select
                   value={newMed.timing}
                   onChange={(e) => setNewMed({ ...newMed, timing: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-cyan-500"
+                  className="w-full px-4 py-3 rounded-xl bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white focus:outline-none focus:border-cyan-500"
                 >
                   <option value="">Select timing</option>
                   {timings.map(t => (
@@ -440,18 +440,18 @@ export default function MedicationsPage() {
                   placeholder="Purpose (optional)"
                   value={newMed.purpose}
                   onChange={(e) => setNewMed({ ...newMed, purpose: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-gray-500 focus:outline-none focus:border-cyan-500"
+                  className="w-full px-4 py-3 rounded-xl bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white placeholder:text-gray-500 focus:outline-none focus:border-cyan-500"
                 />
                 <div className="flex gap-3">
                   <button
                     onClick={addMedication}
-                    className="flex-1 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-medium"
+                    className="flex-1 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 text-gray-900 dark:text-white font-medium"
                   >
                     Add
                   </button>
                   <button
                     onClick={() => setShowAddModal(false)}
-                    className="px-6 py-3 rounded-xl glass text-gray-400 hover:text-white"
+                    className="px-6 py-3 rounded-xl glass text-gray-500 dark:text-gray-400 hover:text-white"
                   >
                     Cancel
                   </button>
@@ -473,7 +473,7 @@ export default function MedicationsPage() {
               className="glass rounded-2xl p-6 max-w-lg w-full"
             >
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
                   <FileText className="w-5 h-5 text-cyan-400" />
                   Upload Prescription
                 </h2>
@@ -487,7 +487,7 @@ export default function MedicationsPage() {
                   }}
                   className="p-1 rounded-lg hover:bg-white/10"
                 >
-                  <X className="w-5 h-5 text-gray-400" />
+                  <X className="w-5 h-5 text-gray-500 dark:text-gray-400" />
                 </button>
               </div>
 
@@ -504,12 +504,12 @@ export default function MedicationsPage() {
                     {extractedMeds.map((med, i) => (
                       <div
                         key={i}
-                        className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10"
+                        className="flex items-center gap-3 p-3 rounded-xl bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10"
                       >
                         <Pill className="w-5 h-5 text-purple-400 flex-shrink-0" />
                         <div className="flex-1 min-w-0">
-                          <p className="text-white font-medium truncate">{med.name}</p>
-                          <p className="text-xs text-gray-400">
+                          <p className="text-gray-900 dark:text-white font-medium truncate">{med.name}</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">
                             {med.dosage} • {med.timing} • {med.frequency}
                             {med.purpose && ` • ${med.purpose}`}
                           </p>
@@ -526,7 +526,7 @@ export default function MedicationsPage() {
                   <div className="flex gap-3">
                     <button
                       onClick={confirmExtractedMeds}
-                      className="flex-1 py-3 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 text-white font-medium flex items-center justify-center gap-2"
+                      className="flex-1 py-3 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 text-gray-900 dark:text-white font-medium flex items-center justify-center gap-2"
                     >
                       <CheckCircle className="w-5 h-5" />
                       Add All Medications
@@ -538,7 +538,7 @@ export default function MedicationsPage() {
                         setPreviewUrl(null);
                         setUploadProgress("");
                       }}
-                      className="px-4 py-3 rounded-xl glass text-gray-400"
+                      className="px-4 py-3 rounded-xl glass text-gray-500 dark:text-gray-400"
                     >
                       Retry
                     </button>
@@ -548,17 +548,17 @@ export default function MedicationsPage() {
                 /* Loading State */
                 <div className="py-8 text-center">
                   {previewUrl && (
-                    <div className="mb-4 rounded-xl overflow-hidden border border-white/10 max-h-40 mx-auto w-fit">
+                    <div className="mb-4 rounded-xl overflow-hidden border border-gray-200 dark:border-white/10 max-h-40 mx-auto w-fit">
                       <img src={previewUrl} alt="Prescription" className="max-h-40 object-contain" />
                     </div>
                   )}
                   <div className="w-16 h-16 mx-auto mb-4 relative">
                     <div className="absolute inset-0 rounded-full border-2 border-cyan-500/30 animate-ping" />
                     <div className="w-full h-full rounded-full bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center">
-                      <Loader2 className="w-8 h-8 text-white animate-spin" />
+                      <Loader2 className="w-8 h-8 text-gray-900 dark:text-white animate-spin" />
                     </div>
                   </div>
-                  <p className="text-white font-medium">{uploadProgress}</p>
+                  <p className="text-gray-900 dark:text-white font-medium">{uploadProgress}</p>
                   <p className="text-xs text-gray-500 mt-2">
                     Powered by Gemini Vision AI — reads handwritten &amp; printed prescriptions
                   </p>
@@ -585,10 +585,10 @@ export default function MedicationsPage() {
                       <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 flex items-center justify-center">
                         <Camera className="w-8 h-8 text-cyan-400" />
                       </div>
-                      <p className="text-white font-medium mb-1">
+                      <p className="text-gray-900 dark:text-white font-medium mb-1">
                         Upload or take a photo of your prescription
                       </p>
-                      <p className="text-sm text-gray-400 mb-3">
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">
                         Works with handwritten &amp; printed prescriptions
                       </p>
                       <div className="flex items-center justify-center gap-4 text-xs text-gray-500">
@@ -606,7 +606,7 @@ export default function MedicationsPage() {
                       setShowPrescriptionUpload(false);
                       setPreviewUrl(null);
                     }}
-                    className="mt-4 w-full px-6 py-2 rounded-xl glass text-gray-400 hover:text-white text-center"
+                    className="mt-4 w-full px-6 py-2 rounded-xl glass text-gray-500 dark:text-gray-400 hover:text-white text-center"
                   >
                     Cancel
                   </button>

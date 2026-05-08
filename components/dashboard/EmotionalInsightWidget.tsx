@@ -59,7 +59,7 @@ export default function EmotionalInsightWidget() {
           <div className="w-8 h-8 rounded-lg bg-pink-500/20 flex items-center justify-center">
             <Heart className="w-4 h-4 text-pink-400" />
           </div>
-          <h3 className="text-lg font-semibold text-white">Emotional Wellness</h3>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Emotional Wellness</h3>
         </div>
         <button className="text-sm text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
           <MessageCircle className="w-3 h-3" />
@@ -74,8 +74,8 @@ export default function EmotionalInsightWidget() {
             {getMoodIcon(emotionalData.mood)}
           </div>
           <div className="flex-1">
-            <p className="text-white font-medium">Current Mood</p>
-            <p className="text-2xl font-bold text-white">
+            <p className="text-gray-900 dark:text-white font-medium">Current Mood</p>
+            <p className="text-2xl font-bold text-gray-900 dark:text-white">
               {emotionalData.mood === "happy" ? "😊 Happy" : emotionalData.mood === "neutral" ? "😐 Neutral" : "😔 Sad"}
             </p>
             <div className="flex items-center gap-2 mt-1">
@@ -86,7 +86,7 @@ export default function EmotionalInsightWidget() {
                   className={`h-full bg-gradient-to-r ${getMoodColor(emotionalData.mood)} rounded-full`}
                 />
               </div>
-              <span className="text-xs text-gray-400">{emotionalData.score}%</span>
+              <span className="text-xs text-gray-500 dark:text-gray-400">{emotionalData.score}%</span>
             </div>
           </div>
         </div>
@@ -125,8 +125,8 @@ export default function EmotionalInsightWidget() {
         <div className="flex items-start gap-2">
           <Sparkles className="w-4 h-4 text-cyan-400 flex-shrink-0 mt-0.5" />
           <div>
-            <p className="text-sm text-white font-medium">{emotionalData.message}</p>
-            <p className="text-xs text-gray-400 mt-1">{emotionalData.suggestion}</p>
+            <p className="text-sm text-gray-900 dark:text-white font-medium">{emotionalData.message}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{emotionalData.suggestion}</p>
           </div>
         </div>
       </div>

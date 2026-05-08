@@ -110,7 +110,7 @@ export default function SettingsPage() {
   ];
 
   return (
-    <div className="flex h-screen bg-gradient-to-b from-[#0A0A0F] to-[#0F0F1A]">
+    <div className="flex h-screen bg-gray-50 dark:bg-gradient-to-b dark:from-[#0A0A0F] dark:to-[#0F0F1A]">
       <Sidebar />
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header />
@@ -119,11 +119,11 @@ export default function SettingsPage() {
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.3)]">
-                  <Settings className="w-6 h-6 text-white" />
+                  <Settings className="w-6 h-6 text-gray-900 dark:text-white" />
                 </div>
                 <div>
-                  <h1 className="text-3xl font-bold text-white">Settings</h1>
-                  <p className="text-gray-400 mt-0.5">Customize your CarePulse experience</p>
+                  <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Settings</h1>
+                  <p className="text-gray-500 dark:text-gray-400 mt-0.5">Customize your CarePulse experience</p>
                 </div>
               </div>
             </motion.div>
@@ -132,18 +132,18 @@ export default function SettingsPage() {
               {sections.map((section, si) => (
                 <motion.div key={section.title} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: si * 0.1 }}
-                  className="rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl overflow-hidden">
+                  className="rounded-2xl border border-gray-200 dark:border-white/10 bg-white/80 dark:bg-white/[0.03] backdrop-blur-xl overflow-hidden">
                   <div className="px-5 py-4 border-b border-white/5 flex items-center gap-2">
                     <section.icon className="w-5 h-5 text-cyan-400" />
-                    <h2 className="text-lg font-semibold text-white">{section.title}</h2>
+                    <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{section.title}</h2>
                   </div>
                   <div className="divide-y divide-white/5">
                     {section.items.map((item) => (
                       <div key={item.key} className="flex items-center justify-between px-5 py-4 hover:bg-white/[0.02] transition">
                         <div className="flex items-center gap-3">
-                          <item.icon className="w-5 h-5 text-gray-400" />
+                          <item.icon className="w-5 h-5 text-gray-500 dark:text-gray-400" />
                           <div>
-                            <p className="text-white text-sm font-medium">{item.label}</p>
+                            <p className="text-gray-900 dark:text-white text-sm font-medium">{item.label}</p>
                             <p className="text-xs text-gray-500">{item.description}</p>
                           </div>
                         </div>
@@ -156,18 +156,18 @@ export default function SettingsPage() {
 
               {/* Language */}
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
-                className="rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-5">
+                className="rounded-2xl border border-gray-200 dark:border-white/10 bg-white/80 dark:bg-white/[0.03] backdrop-blur-xl p-5">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <Languages className="w-5 h-5 text-gray-400" />
+                    <Languages className="w-5 h-5 text-gray-500 dark:text-gray-400" />
                     <div>
-                      <p className="text-white text-sm font-medium">Language</p>
+                      <p className="text-gray-900 dark:text-white text-sm font-medium">Language</p>
                       <p className="text-xs text-gray-500">Choose your preferred language</p>
                     </div>
                   </div>
                   <select value={settings.language}
                     onChange={e => setSettings({ ...settings, language: e.target.value })}
-                    className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-cyan-500">
+                    className="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white text-sm focus:outline-none focus:border-cyan-500">
                     <option value="en">English</option>
                     <option value="hi">Hindi</option>
                     <option value="ur">Urdu</option>

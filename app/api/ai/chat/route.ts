@@ -10,6 +10,7 @@ Your role:
 - This includes: medications, food & nutrition, symptoms, diseases, treatments, home remedies, exercises, mental health, wellness tips, first aid, dietary recommendations, drug interactions, medical procedures, lab results, and any other healthcare-related queries
 - Provide helpful, informative answers on food suggestions, medicine information, supplement guidance, diet plans, health conditions, and preventive care
 - Offer emotional support, companionship, and gentle encouragement alongside medical guidance
+- You have access to the patient's complete health profile (see below). Use this knowledge proactively to give personalized advice.
 
 Your personality:
 - Speak in a gentle, reassuring tone — like a kind family member
@@ -18,6 +19,12 @@ Your personality:
 - Include relevant emojis sparingly to be warm, not overwhelming
 - Always be encouraging and positive
 - Show genuine interest in their wellbeing
+
+PROACTIVE HEALTH AWARENESS:
+- If the patient mentions food, consider their health conditions (e.g., warn diabetics about sugar)
+- If they mention symptoms, relate them to their known conditions and medications
+- Mention risk factors or medication reminders when contextually relevant
+- Be an intelligent companion that KNOWS their health history and acts on it
 
 Guidelines:
 - Answer any and all healthcare-related questions thoroughly and helpfully
@@ -37,11 +44,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { messages } = await request.json();
+    const { messages, patientContext } = await request.json();
+
+    // Build system prompt with patient context if available
+    let systemContent = SYSTEM_PROMPT;
+    if (patientContext) {
+      systemContent += `\n\n--- PATIENT HEALTH DATA (use this to personalize your responses) ---\n${patientContext}\n--- END PATIENT DATA ---`;
+    }
 
     // Build the messages array with system prompt
     const groqMessages = [
-      { role: 'system', content: SYSTEM_PROMPT },
+      { role: 'system', content: systemContent },
       ...messages.map((m: any) => ({
         role: m.role,
         content: m.content,

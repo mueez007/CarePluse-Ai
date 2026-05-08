@@ -42,7 +42,7 @@ export default function HealthScoreRing({ score, previousScore = 72 }: HealthSco
       animate={{ opacity: 1, scale: 1 }}
       className="glass rounded-xl p-5 text-center"
     >
-      <h3 className="text-lg font-semibold text-white mb-4">Overall Health Score</h3>
+      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Overall Health Score</h3>
       
       <div className="relative inline-flex items-center justify-center mb-4">
         <svg width="220" height="220" viewBox="0 0 220 220" className="transform -rotate-90">
@@ -97,8 +97,8 @@ export default function HealthScoreRing({ score, previousScore = 72 }: HealthSco
             transition={{ delay: 0.5 }}
             className="text-center"
           >
-            <span className="text-4xl font-bold text-white">{score}</span>
-            <span className="text-gray-400">/100</span>
+            <span className="text-4xl font-bold text-gray-900 dark:text-white">{score}</span>
+            <span className="text-gray-500 dark:text-gray-400">/100</span>
           </motion.div>
           <div className="flex items-center gap-1 mt-1">
             {isImproved ? (
@@ -125,17 +125,17 @@ export default function HealthScoreRing({ score, previousScore = 72 }: HealthSco
         </span>
       </div>
       
-      <p className="text-sm text-gray-400">
+      <p className="text-sm text-gray-500 dark:text-gray-400">
         {getScoreMessage(score)}
       </p>
       
       {/* Score Breakdown */}
-      <div className="mt-4 pt-4 border-t border-white/10">
+      <div className="mt-4 pt-4 border-t border-gray-200 dark:border-white/10">
         <div className="space-y-2 text-left">
           <div>
             <div className="flex justify-between text-xs mb-1">
-              <span className="text-gray-400">Medication Adherence</span>
-              <span className="text-white">94%</span>
+              <span className="text-gray-500 dark:text-gray-400">Medication Adherence</span>
+              <span className="text-gray-900 dark:text-white">94%</span>
             </div>
             <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
               <div className="w-[94%] h-full bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full" />
@@ -143,8 +143,8 @@ export default function HealthScoreRing({ score, previousScore = 72 }: HealthSco
           </div>
           <div>
             <div className="flex justify-between text-xs mb-1">
-              <span className="text-gray-400">Food Safety</span>
-              <span className="text-white">82%</span>
+              <span className="text-gray-500 dark:text-gray-400">Food Safety</span>
+              <span className="text-gray-900 dark:text-white">82%</span>
             </div>
             <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
               <div className="w-[82%] h-full bg-gradient-to-r from-green-500 to-teal-500 rounded-full" />
@@ -152,8 +152,8 @@ export default function HealthScoreRing({ score, previousScore = 72 }: HealthSco
           </div>
           <div>
             <div className="flex justify-between text-xs mb-1">
-              <span className="text-gray-400">Emotional Wellness</span>
-              <span className="text-white">76%</span>
+              <span className="text-gray-500 dark:text-gray-400">Emotional Wellness</span>
+              <span className="text-gray-900 dark:text-white">76%</span>
             </div>
             <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
               <div className="w-[76%] h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full" />

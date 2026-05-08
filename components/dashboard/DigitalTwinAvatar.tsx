@@ -46,21 +46,21 @@ export default function DigitalTwinAvatar() {
           
           {/* Avatar circle */}
           <div className="relative w-24 h-24 rounded-full bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center">
-            <span className="text-4xl font-bold text-white">
+            <span className="text-4xl font-bold text-gray-900 dark:text-white">
               {healthData?.name?.charAt(0) || "R"}
             </span>
           </div>
           
           {/* AI Badge */}
           <div className="absolute -bottom-2 -right-2 w-6 h-6 rounded-full bg-gradient-to-r from-cyan-400 to-purple-500 flex items-center justify-center">
-            <Sparkles className="w-3 h-3 text-white" />
+            <Sparkles className="w-3 h-3 text-gray-900 dark:text-white" />
           </div>
         </div>
         
-        <h3 className="text-lg font-semibold text-white mt-3">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mt-3">
           {healthData?.name || "Rajesh Kumar"}
         </h3>
-        <p className="text-sm text-gray-400">Digital Twin Active</p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">Digital Twin Active</p>
       </div>
 
       {/* Health Metrics Grid */}
@@ -80,10 +80,10 @@ export default function DigitalTwinAvatar() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.1 }}
-              className="bg-white/5 rounded-lg p-3 text-center"
+              className="bg-gray-100 dark:bg-white/5 rounded-lg p-3 text-center"
             >
               <Icon className={`w-4 h-4 ${statusColors[metric.status as keyof typeof statusColors]} mx-auto mb-1`} />
-              <div className="text-lg font-bold text-white">{metric.value}</div>
+              <div className="text-lg font-bold text-gray-900 dark:text-white">{metric.value}</div>
               <div className="text-xs text-gray-500">{metric.label}</div>
             </motion.div>
           );
@@ -104,7 +104,7 @@ export default function DigitalTwinAvatar() {
               </span>
             ))}
             {healthData.conditions.length > 3 && (
-              <span className="text-xs px-2 py-1 rounded-full bg-white/5 text-gray-400">
+              <span className="text-xs px-2 py-1 rounded-full bg-gray-100 dark:bg-white/5 text-gray-500 dark:text-gray-400">
                 +{healthData.conditions.length - 3}
               </span>
             )}
@@ -124,7 +124,7 @@ export default function DigitalTwinAvatar() {
                 className="h-full bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full"
               />
             </div>
-            <span className="text-xs text-gray-400">94% adherence</span>
+            <span className="text-xs text-gray-500 dark:text-gray-400">94% adherence</span>
           </div>
           <p className="text-xs text-gray-500 mt-2">
             {healthData.medications.length} medications • Next: BP Tablet at 8:00 AM
@@ -133,7 +133,7 @@ export default function DigitalTwinAvatar() {
       )}
 
       {/* Last Updated */}
-      <div className="text-center pt-3 border-t border-white/10">
+      <div className="text-center pt-3 border-t border-gray-200 dark:border-white/10">
         <p className="text-xs text-gray-500 flex items-center justify-center gap-1">
           <Activity className="w-3 h-3 text-green-400 animate-pulse" />
           Last updated: Today, 08:30 AM
