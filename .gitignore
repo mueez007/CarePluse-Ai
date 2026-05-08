@@ -36,3 +36,8 @@ next-env.d.ts
 
 # supabase
 supabase/.temp
+
+# Local database
+carepulse.db
+carepulse.db-wal
+carepulse.db-shm
