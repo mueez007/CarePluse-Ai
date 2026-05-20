@@ -5,8 +5,6 @@ import { getDb } from './db';
 const SALT_ROUNDS = 10;
 const SESSION_DURATION_DAYS = 30;
 
-// ----- Password Utilities -----
-
 export async function hashPassword(password: string): Promise<string> {
   return bcrypt.hash(password, SALT_ROUNDS);
 }
@@ -15,57 +13,60 @@ export async function verifyPassword(password: string, hash: string): Promise<bo
   return bcrypt.compare(password, hash);
 }
 
-// ----- Session Utilities -----
-
 function generateToken(): string {
   return crypto.randomBytes(32).toString('hex');
 }
 
-function generateId(): string {
-  return crypto.randomUUID();
-}
-
-export function createSession(userId: string): { token: string; expiresAt: string } {
-  const db = getDb();
+export async function createSession(userId: string): Promise<{ token: string; expiresAt: string }> {
+  const supabase = getDb();
   const token = generateToken();
-  const sessionId = generateId();
   const expiresAt = new Date(Date.now() + SESSION_DURATION_DAYS * 24 * 60 * 60 * 1000).toISOString();
 
-  db.prepare(
-    'INSERT INTO sessions (id, user_id, token, expires_at) VALUES (?, ?, ?, ?)'
-  ).run(sessionId, userId, token, expiresAt);
+  const { error } = await supabase
+    .from('sessions')
+    .insert({
+      user_id: userId,
+      token,
+      expires_at: expiresAt,
+    });
+
+  if (error) {
+    console.error('Error creating session:', error);
+    throw new Error('Failed to create session');
+  }
 
   return { token, expiresAt };
 }
 
-export function validateSession(token: string): { userId: string } | null {
-  const db = getDb();
-  const session = db.prepare(
-    'SELECT user_id, expires_at FROM sessions WHERE token = ?'
-  ).get(token) as { user_id: string; expires_at: string } | undefined;
+export async function validateSession(token: string): Promise<{ userId: string } | null> {
+  const supabase = getDb();
 
-  if (!session) return null;
+  const { data: session, error } = await supabase
+    .from('sessions')
+    .select('user_id, expires_at')
+    .eq('token', token)
+    .single();
 
-  // Check expiry
+  if (error || !session) return null;
+
   if (new Date(session.expires_at) < new Date()) {
-    db.prepare('DELETE FROM sessions WHERE token = ?').run(token);
+    // Session expired — clean it up
+    await supabase.from('sessions').delete().eq('token', token);
     return null;
   }
 
   return { userId: session.user_id };
 }
 
-export function deleteSession(token: string): void {
-  const db = getDb();
-  db.prepare('DELETE FROM sessions WHERE token = ?').run(token);
+export async function deleteSession(token: string): Promise<void> {
+  const supabase = getDb();
+  await supabase.from('sessions').delete().eq('token', token);
 }
 
-export function deleteAllUserSessions(userId: string): void {
-  const db = getDb();
-  db.prepare('DELETE FROM sessions WHERE user_id = ?').run(userId);
+export async function deleteAllUserSessions(userId: string): Promise<void> {
+  const supabase = getDb();
+  await supabase.from('sessions').delete().eq('user_id', userId);
 }
-
-// ----- User Utilities -----
 
 export interface UserRecord {
   id: string;
@@ -74,45 +75,68 @@ export interface UserRecord {
   created_at: string;
 }
 
-export function createUser(name: string, email: string, passwordHash: string): UserRecord {
-  const db = getDb();
-  const id = generateId();
+export async function createUser(name: string, email: string, passwordHash: string): Promise<UserRecord> {
+  const supabase = getDb();
 
-  db.prepare(
-    'INSERT INTO users (id, name, email, password_hash) VALUES (?, ?, ?, ?)'
-  ).run(id, name, email, passwordHash);
+  // Insert user
+  const { data: user, error: userError } = await supabase
+    .from('users')
+    .insert({ name, email, password_hash: passwordHash })
+    .select('id, name, email, created_at')
+    .single();
+
+  if (userError || !user) {
+    console.error('Error creating user:', userError);
+    throw new Error(userError?.message || 'Failed to create user');
+  }
 
   // Create empty profile
-  db.prepare(
-    'INSERT INTO user_profiles (user_id) VALUES (?)'
-  ).run(id);
+  const { error: profileError } = await supabase
+    .from('user_profiles')
+    .insert({ user_id: user.id });
 
-  return { id, name, email, created_at: new Date().toISOString() };
+  if (profileError) {
+    console.error('Error creating user profile:', profileError);
+    // Non-fatal — user is created, profile can be retried
+  }
+
+  return {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    created_at: user.created_at,
+  };
 }
 
-export function getUserByEmail(email: string): (UserRecord & { password_hash: string }) | null {
-  const db = getDb();
-  const user = db.prepare(
-    'SELECT id, name, email, password_hash, created_at FROM users WHERE email = ?'
-  ).get(email) as (UserRecord & { password_hash: string }) | undefined;
+export async function getUserByEmail(email: string): Promise<(UserRecord & { password_hash: string }) | null> {
+  const supabase = getDb();
 
-  return user || null;
+  const { data: user, error } = await supabase
+    .from('users')
+    .select('id, name, email, password_hash, created_at')
+    .eq('email', email)
+    .single();
+
+  if (error || !user) return null;
+  return user;
 }
 
-export function getUserById(id: string): UserRecord | null {
-  const db = getDb();
-  const user = db.prepare(
-    'SELECT id, name, email, created_at FROM users WHERE id = ?'
-  ).get(id) as UserRecord | undefined;
+export async function getUserById(id: string): Promise<UserRecord | null> {
+  const supabase = getDb();
 
-  return user || null;
+  const { data: user, error } = await supabase
+    .from('users')
+    .select('id, name, email, created_at')
+    .eq('id', id)
+    .single();
+
+  if (error || !user) return null;
+  return user;
 }
 
-// ----- Helper for API routes: extract user from cookie -----
-
-export function getUserFromToken(token: string | undefined): UserRecord | null {
+export async function getUserFromToken(token: string | undefined): Promise<UserRecord | null> {
   if (!token) return null;
-  const session = validateSession(token);
+  const session = await validateSession(token);
   if (!session) return null;
   return getUserById(session.userId);
 }

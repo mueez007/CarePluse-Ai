@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Find user
-    const user = getUserByEmail(email);
+    const user = await getUserByEmail(email);
     if (!user) {
       return NextResponse.json(
         { error: 'Invalid email or password' },
@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create session
-    const { token, expiresAt } = createSession(user.id);
+    const { token, expiresAt } = await createSession(user.id);
 
     // Set session cookie
     const response = NextResponse.json({

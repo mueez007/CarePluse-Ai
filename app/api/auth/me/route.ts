@@ -4,7 +4,7 @@ import { getUserFromToken, SESSION_COOKIE_NAME } from '@/lib/auth';
 export async function GET(request: NextRequest) {
   try {
     const token = request.cookies.get(SESSION_COOKIE_NAME)?.value;
-    const user = getUserFromToken(token);
+    const user = await getUserFromToken(token);
 
     if (!user) {
       return NextResponse.json(
