@@ -31,7 +31,7 @@
     "framer-motion": "^12.4.10",
     "groq-sdk": "^0.14.0",
     "lucide-react": "^0.479.0",
-    "next": "15.2.4",
+    "next": "^16.2.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.55.0",
