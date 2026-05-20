@@ -36,6 +36,8 @@
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.55.0",
     "react-webcam": "^7.2.0",
+    "retell-client-js-sdk": "^2.0.7",
+    "retell-sdk": "^5.26.1",
     "sonner": "^2.0.1",
     "tailwind-merge": "^3.0.2",
     "tailwindcss-animate": "^1.0.7",

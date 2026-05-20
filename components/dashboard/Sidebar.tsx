@@ -76,10 +76,10 @@ export default function Sidebar() {
       {/* 3-dot trigger button — always visible */}
       <button
         onClick={() => setOpen(true)}
-        className="fixed top-4 left-4 z-50 p-2.5 rounded-xl glass-white border border-gray-200 dark:border-gray-200 dark:border-white/10 hover:bg-white/10 transition-all group"
+        className="fixed top-4 left-4 z-50 p-2.5 rounded-xl bg-[#0e0e1a]/80 backdrop-blur-md border border-white/10 hover:border-cyan-500/40 hover:bg-[#0e0e1a] transition-all group shadow-lg shadow-black/20"
         aria-label="Open navigation menu"
       >
-        <MoreVertical className="w-5 h-5 text-gray-600 dark:text-gray-300 group-hover:text-white transition" />
+        <MoreVertical className="w-5 h-5 text-gray-400 group-hover:text-cyan-400 transition" />
       </button>
 
       {/* Backdrop overlay */}
@@ -96,7 +96,7 @@ export default function Sidebar() {
         )}
       </AnimatePresence>
 
-      {/* Sidebar panel */}
+      {/* Sidebar panel — permanently dark glassmorphic */}
       <AnimatePresence>
         {open && (
           <motion.aside
@@ -105,14 +105,14 @@ export default function Sidebar() {
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: -300, opacity: 0 }}
             transition={{ type: "spring", damping: 25, stiffness: 250 }}
-            className="fixed left-0 top-0 h-full w-72 z-50 border-r border-gray-200 dark:border-gray-200 dark:border-gray-200 dark:border-white/10 bg-white/95 dark:bg-[#0a0a14]/98 backdrop-blur-xl"
+            className="fixed left-0 top-0 h-full w-72 z-50 border-r border-white/10 bg-[#0a0a14]/95 backdrop-blur-xl shadow-2xl shadow-black/40"
           >
             <div className="flex flex-col h-full">
               {/* Header with close button */}
-              <div className="p-5 border-b border-gray-200 dark:border-gray-200 dark:border-white/10 flex items-center justify-between">
+              <div className="p-5 border-b border-white/10 flex items-center justify-between">
                 <Link href="/dashboard" className="flex items-center gap-3" onClick={() => setOpen(false)}>
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-purple-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
-                    <Heart className="w-6 h-6 text-gray-900 dark:text-white" fill="white" />
+                    <Heart className="w-6 h-6 text-white" fill="white" />
                   </div>
                   <span className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
                     CarePulse AI
@@ -122,7 +122,7 @@ export default function Sidebar() {
                   onClick={() => setOpen(false)}
                   className="p-2 rounded-lg hover:bg-white/10 transition"
                 >
-                  <X className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                  <X className="w-5 h-5 text-gray-500 hover:text-gray-300 transition" />
                 </button>
               </div>
 
@@ -144,15 +144,15 @@ export default function Sidebar() {
                           className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all cursor-pointer ${
                             isActive
                               ? "bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 shadow-lg shadow-cyan-500/5"
-                              : "hover:bg-gray-100 dark:bg-white/5"
+                              : "hover:bg-white/5 border border-transparent"
                           }`}
                         >
-                          <Icon className={`w-5 h-5 ${isActive ? "text-cyan-400" : "text-gray-500 dark:text-gray-400"}`} />
-                          <span className={`font-medium ${isActive ? "text-white" : "text-gray-600 dark:text-gray-300"}`}>
+                          <Icon className={`w-5 h-5 ${isActive ? "text-cyan-400" : "text-gray-500"}`} />
+                          <span className={`font-medium ${isActive ? "text-white" : "text-gray-400 hover:text-gray-200"}`}>
                             {item.label}
                           </span>
                           {isActive && (
-                            <div className="ml-auto w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                            <div className="ml-auto w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-sm shadow-cyan-400/50" />
                           )}
                         </div>
                       </Link>
@@ -162,7 +162,7 @@ export default function Sidebar() {
               </nav>
 
               {/* Logout */}
-              <div className="p-3 border-t border-gray-200 dark:border-gray-200 dark:border-white/10">
+              <div className="p-3 border-t border-white/10">
                 <button
                   onClick={handleLogout}
                   className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-500/10 transition text-red-400"

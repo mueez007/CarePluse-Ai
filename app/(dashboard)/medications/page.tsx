@@ -22,6 +22,9 @@ import {
 } from "lucide-react";
 import Sidebar from "@/components/dashboard/Sidebar";
 import Header from "@/components/dashboard/Header";
+import { useVoiceReminder } from "@/hooks/useVoiceReminder";
+import VoiceReminderWidget from "@/components/dashboard/VoiceReminderWidget";
+import FloatingCallButton from "@/components/dashboard/FloatingCallButton";
 
 interface Medication {
   id: string;
@@ -35,6 +38,19 @@ interface Medication {
 
 export default function MedicationsPage() {
   const [medications, setMedications] = useState<Medication[]>([]);
+  const {
+    isActive,
+    isMinimized,
+    isConnecting,
+    error,
+    callStatus,
+    isAgentSpeaking,
+    callMode,
+    startCall,
+    endCall,
+    minimize,
+    maximize,
+  } = useVoiceReminder();
   const [showAddModal, setShowAddModal] = useState(false);
   const [showPrescriptionUpload, setShowPrescriptionUpload] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -385,7 +401,10 @@ export default function MedicationsPage() {
               <p className="text-gray-500 dark:text-gray-400 text-sm mb-4">
                 Enable automated voice calls for medicine reminders
               </p>
-              <button className="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 text-gray-900 dark:text-white font-medium flex items-center gap-2">
+              <button
+                onClick={startCall}
+                className="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 text-gray-900 dark:text-white font-medium flex items-center gap-2 hover:from-cyan-400 hover:to-purple-500 transition active:scale-[0.98]"
+              >
                 <Bell className="w-4 h-4" />
                 Enable Voice Reminders
               </button>
@@ -616,6 +635,23 @@ export default function MedicationsPage() {
           </div>
         )}
       </AnimatePresence>
+
+      {/* Voice Reminder Overlay Components */}
+      <VoiceReminderWidget
+        isActive={isActive}
+        isConnecting={isConnecting}
+        error={error}
+        callStatus={callStatus}
+        isAgentSpeaking={isAgentSpeaking}
+        callMode={callMode}
+        endCall={endCall}
+        minimize={minimize}
+      />
+      <FloatingCallButton
+        isActive={isActive}
+        isMinimized={isMinimized}
+        maximize={maximize}
+      />
     </div>
   );
 }

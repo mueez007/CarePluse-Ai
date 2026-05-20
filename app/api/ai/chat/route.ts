@@ -3,7 +3,7 @@ import { NextRequest } from 'next/server';
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
 
-const SYSTEM_PROMPT = `You are CarePulse AI, a warm, caring, and knowledgeable AI healthcare companion designed for elderly individuals.
+const BASE_SYSTEM_PROMPT = `You are CarePulse AI, a warm, caring, and knowledgeable AI healthcare companion designed for elderly individuals.
 
 Your role:
 - You are a comprehensive healthcare assistant who can discuss ALL medical and health-related topics
@@ -35,6 +35,67 @@ Guidelines:
 
 Important: You are a healthcare knowledge companion. You freely discuss all aspects of health and medicine. Only decline non-healthcare topics.`;
 
+// Category-specific prompt additions
+const CATEGORY_PROMPTS: Record<string, string> = {
+  emotional: `
+FOCUS MODE: EMOTIONAL SUPPORT & MENTAL WELLNESS
+You are currently in Emotional Support mode. Prioritize:
+- Active listening and empathetic responses
+- Validating the patient's feelings without judgment
+- Offering gentle coping strategies: breathing exercises, grounding techniques, positive affirmations
+- Recognizing signs of anxiety, depression, loneliness, or grief
+- Encouraging social connection and meaningful activities
+- Suggesting mindfulness and relaxation practices
+- Being extra patient, warm, and present
+- Remember: you are their trusted emotional companion, a safe space to express feelings`,
+
+  medicine: `
+FOCUS MODE: MEDICINE & MEDICATION GUIDANCE
+You are currently in Medicine Suggestion mode. Prioritize:
+- Detailed information about medications, dosages, and schedules
+- Drug interaction warnings and side effect awareness
+- Over-the-counter medicine suggestions for common ailments
+- Supplement and vitamin recommendations based on their health profile
+- Medication adherence tips and reminder strategies
+- Explaining how medicines work in simple, clear language
+- Always mention when they should consult their doctor before changing prescriptions
+- Cross-reference with their known conditions and current medications`,
+
+  health: `
+FOCUS MODE: HEALTH RECOMMENDATIONS & WELLNESS
+You are currently in Health Recommendations mode. Prioritize:
+- Personalized nutrition and diet plans based on their conditions
+- Age-appropriate exercise and movement suggestions
+- Preventive care tips and health screening reminders
+- Sleep hygiene and daily routine optimization
+- Hydration, weight management, and lifestyle improvements
+- Seasonal health tips (flu prevention, heat safety, etc.)
+- Traditional and modern wellness practices
+- Specific food suggestions: what to eat, what to avoid, meal timing`,
+
+  symptom: `
+FOCUS MODE: SYMPTOM CHECK & HEALTH ASSESSMENT
+You are currently in Symptom Check mode. Prioritize:
+- Careful, systematic symptom assessment (ask about onset, duration, severity, location)
+- Relating symptoms to their known conditions and medications
+- Identifying potential red flags that need immediate medical attention
+- Providing clear guidance on when to see a doctor vs. self-care at home
+- Suggesting initial first-aid or comfort measures
+- Asking follow-up questions to narrow down possibilities
+- Being thorough but not alarming — maintain a calm, reassuring tone
+- Always err on the side of caution for elderly patients`,
+};
+
+const CALL_MODE_INSTRUCTION = `
+CRITICAL: You are in LIVE VOICE CALL MODE.
+- Reply in exactly 1-2 short, natural, conversational sentences
+- Do NOT use any markdown formatting, bullet points, lists, or headers
+- Do NOT use asterisks, hashtags, dashes, or numbered items
+- Speak as if you are a real human on a phone call — warm, natural, flowing
+- Use contractions (I'm, you're, that's, let's) to sound natural
+- Be concise but caring — like a quick, reassuring phone conversation
+- NEVER say "here are some tips" or list things out — just have a natural dialogue`;
+
 export async function POST(request: NextRequest) {
   try {
     if (!GROQ_API_KEY) {
@@ -44,10 +105,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { messages, patientContext } = await request.json();
+    const { messages, patientContext, category, callMode } = await request.json();
 
-    // Build system prompt with patient context if available
-    let systemContent = SYSTEM_PROMPT;
+    // Build system prompt with category and call mode
+    let systemContent = BASE_SYSTEM_PROMPT;
+
+    // Add category-specific instructions
+    if (category && CATEGORY_PROMPTS[category]) {
+      systemContent += '\n' + CATEGORY_PROMPTS[category];
+    }
+
+    // Add call mode instructions
+    if (callMode) {
+      systemContent += '\n' + CALL_MODE_INSTRUCTION;
+    }
+
+    // Add patient context
     if (patientContext) {
       systemContent += `\n\n--- PATIENT HEALTH DATA (use this to personalize your responses) ---\n${patientContext}\n--- END PATIENT DATA ---`;
     }
@@ -70,8 +143,8 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify({
         model: 'llama-3.3-70b-versatile',
         messages: groqMessages,
-        temperature: 0.7,
-        max_tokens: 600,
+        temperature: callMode ? 0.8 : 0.7,
+        max_tokens: callMode ? 120 : 600,
         stream: true,
       }),
     });
